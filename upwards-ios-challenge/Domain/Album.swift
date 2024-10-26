@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - Album
-struct Album: Decodable {
+struct Album: Decodable, Identifiable {
     
     enum CodingKeys: String, CodingKey {
         case id
