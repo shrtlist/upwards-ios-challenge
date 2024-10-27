@@ -16,6 +16,7 @@ struct AlbumDetailView: View {
 
     private var formattedReleaseDate: String {
         let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
         dateFormatter.dateStyle = .long
         return dateFormatter.string(from: album.releaseDate)
     }
