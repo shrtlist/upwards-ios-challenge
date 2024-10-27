@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TopAlbumsView: View {
     @StateObject var viewModel: TopAlbumsViewModel
+    @State private var selectedAlbum: Album?
 
     var body: some View {
         NavigationView {
@@ -22,12 +23,16 @@ struct TopAlbumsView: View {
                     List(viewModel.albums) { album in
                         AlbumRowView(album: album)
                             .onTapGesture {
+                                selectedAlbum = album
                                 debugPrint(album)
                             }
                     }
                 }
             }
             .navigationTitle("Top Albums")
+            .sheet(item: $selectedAlbum) { album in
+                AlbumDetailView(album: album)
+            }
         }
         .onAppear {
             viewModel.loadData()
