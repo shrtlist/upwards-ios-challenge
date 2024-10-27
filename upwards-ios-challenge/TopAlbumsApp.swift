@@ -12,7 +12,8 @@ struct TopAlbumsApp: App {
 
     var body: some Scene {
         WindowGroup {
-            TopAlbumsView(viewModel: TopAlbumsViewModel(iTunesAPI: ITunesAPI(network: Network(sessionConfig: .default))))
+            let viewModel = TopAlbumsViewModel(iTunesAPI: ITunesAPI(network: Network(sessionConfig: .default)))
+            TopAlbumsView(viewModel: viewModel)
         }
     }
 }
