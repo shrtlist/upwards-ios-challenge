@@ -24,7 +24,7 @@ class TopAlbumsViewModel: ObservableObject {
         error = nil
 
         do {
-            albums = try await iTunesAPI.getTopAlbums(limit: 10)
+            albums = try await iTunesAPI.getTopAlbums(limit: 100)
         } catch {
             self.error = error
         }
