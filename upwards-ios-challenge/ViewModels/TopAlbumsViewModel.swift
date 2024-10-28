@@ -19,17 +19,15 @@ class TopAlbumsViewModel: ObservableObject {
         self.iTunesAPI = iTunesAPI
     }
 
-    func loadData() {
+    func loadData() async {
         isLoading = true
         error = nil
 
-        Task {
-            do {
-                albums = try await iTunesAPI.getTopAlbums(limit: 10)
-            } catch {
-                self.error = error
-            }
-            isLoading = false
+        do {
+            albums = try await iTunesAPI.getTopAlbums(limit: 10)
+        } catch {
+            self.error = error
         }
+        isLoading = false
     }
 }

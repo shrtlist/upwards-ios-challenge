@@ -35,7 +35,9 @@ struct TopAlbumsView: View {
             }
         }
         .onAppear {
-            viewModel.loadData()
+            Task {
+                await viewModel.loadData()
+            }
         }
     }
 }
