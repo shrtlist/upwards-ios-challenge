@@ -10,6 +10,7 @@ import SwiftUI
 struct TopAlbumsView: View {
     @StateObject var viewModel: TopAlbumsViewModel
     @State private var selectedAlbum: Album?
+    @State private var searchText = ""
 
     var body: some View {
         NavigationView {
@@ -20,7 +21,7 @@ struct TopAlbumsView: View {
                     Text("Error: \(error.localizedDescription)")
                         .foregroundColor(.red)
                 } else {
-                    List(viewModel.albums) { album in
+                    List(searchResults) { album in
                         AlbumRowView(album: album)
                             .onTapGesture {
                                 selectedAlbum = album
@@ -29,6 +30,7 @@ struct TopAlbumsView: View {
                     }
                 }
             }
+            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
             .navigationTitle("Top Albums")
             .sheet(item: $selectedAlbum) { album in
                 AlbumDetailView(album: album)
@@ -38,6 +40,16 @@ struct TopAlbumsView: View {
             Task {
                 await viewModel.loadData()
             }
+        }
+    }
+
+    var searchResults: [Album] {
+        let albums = viewModel.albums
+
+        if searchText.isEmpty {
+            return albums
+        } else {
+            return albums.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
         }
     }
 }
