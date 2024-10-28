@@ -6,6 +6,7 @@
 //
 
 import XCTest
+@testable import upwards_ios_challenge
 
 final class upwards_ios_challengeTests: XCTestCase {
 
@@ -17,20 +18,34 @@ final class upwards_ios_challengeTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-        XCTAssert(false)
+    @MainActor func testfetchAlbums() async {
+        let mockNetwork = MockNetwork(sessionConfig: .default)
+        let iTunesAPI = ITunesAPI(network: mockNetwork)
+        let sut = TopAlbumsViewModel(iTunesAPI: iTunesAPI)
+
+        await sut.loadData()
+
+        XCTAssertFalse(sut.isLoading)
+        XCTAssertTrue(sut.albums.count > 0)
+        XCTAssertNil(sut.error)
     }
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
+    @MainActor func testAlbum() async {
+        let mockNetwork = MockNetwork(sessionConfig: .default)
+        let sut = ITunesAPI(network: mockNetwork)
+
+        do {
+            let albums = try await sut.getTopAlbums()
+            XCTAssertTrue(albums.count > 0)
+
+            let album = albums.first
+            XCTAssertNotNil(album?.artistName)
+            XCTAssertNotNil(album?.artworkUrl100)
+            XCTAssertNotNil(album?.name)
+            XCTAssertNotNil(album?.releaseDate)
+            XCTAssertNotNil(album?.id)
+        } catch {
+            XCTFail(error.localizedDescription)
         }
     }
-
 }
