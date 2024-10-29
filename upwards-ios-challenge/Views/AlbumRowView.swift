@@ -17,23 +17,27 @@ struct AlbumRowView: View {
         HStack {
             if let artworkUrl = album.artworkUrl100,
                let url = URL(string: artworkUrl) {
-                AsyncImage(url: url) { image in
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: frameSize, height: frameSize)
-                        .cornerRadius(cornerRadius)
-                } placeholder: {
-                    ProgressView()
-                        .frame(width: frameSize, height: frameSize)
+                AsyncImage(url: url) { phase in
+                    switch phase {
+                    case .failure:
+                        Image(systemName: "music.note") // Indicates an error, show default image
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: frameSize, height: frameSize)
+                            .background(Color.gray.opacity(0.1))
+                            .cornerRadius(cornerRadius)
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: frameSize)
+                            .cornerRadius(cornerRadius)
+                    default:
+                        // Acts as a placeholder.
+                        ProgressView()
+                            .frame(width: frameSize, height: frameSize)
+                    }
                 }
-            } else {
-                Image(systemName: "music.note")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: frameSize, height: frameSize)
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(cornerRadius)
             }
 
             VStack(alignment: .leading, spacing: padding) {
