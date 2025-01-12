@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TopAlbumsView: View {
-    @StateObject var viewModel: TopAlbumsViewModel
+    @State var viewModel: TopAlbumsViewModel
     @State private var selectedAlbum: Album?
     @State private var searchText = ""
 

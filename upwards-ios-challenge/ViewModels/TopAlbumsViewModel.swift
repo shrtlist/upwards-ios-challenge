@@ -8,10 +8,10 @@
 import SwiftUI
 
 @MainActor
-class TopAlbumsViewModel: ObservableObject {
-    @Published var albums: [Album] = []
-    @Published var isLoading = false
-    @Published var error: Error?
+@Observable class TopAlbumsViewModel {
+    var albums: [Album] = []
+    var isLoading = false
+    var error: Error?
 
     private let iTunesAPI: ITunesAPI
 
