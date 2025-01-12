@@ -20,6 +20,7 @@ class TopAlbumsViewModel: ObservableObject {
     }
 
     func loadData() async {
+        guard !isLoading else { return }
         isLoading = true
         error = nil
 
