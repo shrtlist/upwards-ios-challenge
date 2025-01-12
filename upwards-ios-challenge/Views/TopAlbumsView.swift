@@ -20,6 +20,10 @@ struct TopAlbumsView: View {
                 } else if let error = viewModel.error {
                     Text("Error: \(error.localizedDescription)")
                         .foregroundColor(.red)
+                } else if viewModel.albums.isEmpty {
+                    ScrollView {
+                        ContentUnavailableView.init("No results", systemImage: "music.note.house")
+                    }
                 } else {
                     List(searchResults) { album in
                         AlbumRowView(album: album)
