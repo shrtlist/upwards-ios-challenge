@@ -31,10 +31,7 @@ struct AlbumDetailView: View {
                         AsyncImage(url: url) { phase in
                             switch phase {
                             case .failure:
-                                Image(systemName: "music.note") // Indicates an error, show default image
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: frameSize, height: frameSize)
+                                PlaceholderImageView(size: frameSize) // Indicates an error, show default image
                                     .background(Color.gray.opacity(0.1))
                                     .cornerRadius(cornerRadius)
                             case .success(let image):
@@ -47,9 +44,11 @@ struct AlbumDetailView: View {
                             default:
                                 // Acts as a placeholder.
                                 ProgressView()
-                                    .frame(width: frameSize, height: frameSize)
                             }
                         }
+                        .frame(width: frameSize, height: frameSize)
+                    } else {
+                        PlaceholderImageView(size: frameSize)
                     }
 
                     // Album Info

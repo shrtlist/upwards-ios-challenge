@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AlbumRowView: View {
     let album: Album
-    private let frameSize = 80.0
+    private let frameSize = 60.0
     private let cornerRadius = 8.0
     private let padding = 8.0
 
@@ -20,24 +20,22 @@ struct AlbumRowView: View {
                 AsyncImage(url: url) { phase in
                     switch phase {
                     case .failure:
-                        Image(systemName: "music.note") // Indicates an error, show default image
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: frameSize, height: frameSize)
+                        PlaceholderImageView(size: frameSize) // Indicates an error, show default image
                             .background(Color.gray.opacity(0.1))
                             .cornerRadius(cornerRadius)
                     case .success(let image):
                         image
                             .resizable()
                             .scaledToFit()
-                            .frame(maxWidth: frameSize)
                             .cornerRadius(cornerRadius)
                     default:
                         // Acts as a placeholder.
                         ProgressView()
-                            .frame(width: frameSize, height: frameSize)
                     }
                 }
+                .frame(maxWidth: frameSize)
+            } else {
+                PlaceholderImageView(size: frameSize)
             }
 
             VStack(alignment: .leading, spacing: padding) {
@@ -50,4 +48,9 @@ struct AlbumRowView: View {
             .padding(.vertical, padding)
         }
     }
+}
+
+#Preview("CoffeeShopRow") {
+    let album = Album(id: "1", name: "Test Album", artworkUrl100: "https://picsum.photos/100/100", artistName: "Test Artist", releaseDate: Date.now)
+    AlbumRowView(album: album)
 }
